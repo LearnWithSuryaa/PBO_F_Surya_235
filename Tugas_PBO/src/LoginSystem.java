@@ -22,16 +22,16 @@ public class LoginSystem {
         System.out.println("2. Mahasiswa");
         System.out.print("Masukkan pilihan: ");
         
-        int pilihan;
+        
 
-        if (input.hasNextInt()) {
-            pilihan = input.nextInt();
-            input.nextLine(); // newline setelah angka
-        } else {
-            System.out.println("Pilihan tidak valid.");
+        if (!input.hasNextInt()) {
+            System.out.println("Pilihan tidak valid. Harus berupa angka 1 atau 2.");
             input.close();
             return;
         }
+
+        int pilihan = input.nextInt();
+        input.nextLine(); // Membersihkan buffer
 
         if (pilihan == 1) {
             while (true) {
@@ -72,7 +72,7 @@ public class LoginSystem {
                 }
             }
         } else {
-            System.out.println("Pilihan tidak valid.");
+            System.out.println("Pilihan tidak valid. Harus berupa angka 1 atau 2.");
         }
         
         input.close();
