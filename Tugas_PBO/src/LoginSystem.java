@@ -10,19 +10,17 @@ public class LoginSystem {
 
         // Data mahasiswa
         String[][] dataMahasiswa = {
-            {"Muhammad Surya", "202410370110235"},
-            {"Ahmad Budi", "202410370110123"},
-            {"King Andi", "202410370110456"},
-            {"Queen Caca", "202410370110789"},
-            {"Prince Dede", "202410370110321"}
+                { "Muhammad Surya", "202410370110235" },
+                { "Ahmad Budi", "202410370110123" },
+                { "King Andi", "202410370110456" },
+                { "Queen Caca", "202410370110789" },
+                { "Prince Dede", "202410370110321" }
         };
 
         System.out.println("Pilih login:");
         System.out.println("1. Admin");
         System.out.println("2. Mahasiswa");
         System.out.print("Masukkan pilihan: ");
-        
-        
 
         if (!input.hasNextInt()) {
             System.out.println("Pilihan tidak valid. Harus berupa angka 1 atau 2.");
@@ -74,7 +72,7 @@ public class LoginSystem {
         } else {
             System.out.println("Pilihan tidak valid. Harus berupa angka 1 atau 2.");
         }
-        
+
         input.close();
     }
 }
