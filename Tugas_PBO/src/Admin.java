@@ -1,19 +1,29 @@
 public class Admin {
-    private final String username = "Admin235";
-    private final String password = "Password235";
+    private String username;
+    private String password;
 
-    // Metode untuk memeriksa login Admin
-    public boolean login(String inputUsername, String inputPassword) {
-        return inputUsername.equals(username) && inputPassword.equals(password);
+    // Constructor untuk inisialisasi username dan password
+    public Admin(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
-    // Metode untuk mengecek apakah username valid
-    public boolean isValidUsername(String inputUsername) {
-        return inputUsername.equals(username);
+    // Metode untuk login (validasi username & password sekaligus)
+    public boolean validateLogin(String inputUsername, String inputPassword) {
+        return this.username.equals(inputUsername) && this.password.equals(inputPassword);
     }
 
-    // Metode untuk mengecek apakah password valid
-    public boolean isValidPassword(String inputPassword) {
-        return inputPassword.equals(password);
+    // Getter untuk username (tidak ada setter karena username sebaiknya tetap)
+    public String getUsername() {
+        return username;
+    }
+
+    // Getter & Setter untuk password (bisa diubah jika perlu)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String newPassword) {
+        this.password = newPassword;
     }
 }

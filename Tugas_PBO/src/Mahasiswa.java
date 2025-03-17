@@ -1,56 +1,57 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Mahasiswa {
     private String nama;
     private String nim;
 
-    // Data mahasiswa yang valid
-    private static final String[][] dataMahasiswa = {
-        { "Muhammad Surya", "202410370110235" },
-        { "Ahmad Budi", "202410370110123" },
-        { "King Andi", "202410370110456" },
-        { "Queen Caca", "202410370110789" },
-        { "Prince Dede", "202410370110321" }
-    };
+    // List mahasiswa yang valid
+    private static final List<Mahasiswa> daftarMahasiswa = new ArrayList<>();
 
-    // Konstruktor untuk objek mahasiswa
+    // Inisialisasi data mahasiswa
+    static {
+        daftarMahasiswa.add(new Mahasiswa("Muhammad Surya", "202410370110235"));
+        daftarMahasiswa.add(new Mahasiswa("Ahmad Budi", "202410370110123"));
+        daftarMahasiswa.add(new Mahasiswa("King Andi", "202410370110456"));
+        daftarMahasiswa.add(new Mahasiswa("Queen Caca", "202410370110789"));
+        daftarMahasiswa.add(new Mahasiswa("Prince Dede", "202410370110321"));
+    }
+
+    // Konstruktor
     public Mahasiswa(String nama, String nim) {
         this.nama = nama;
         this.nim = nim;
     }
 
-    // Metode untuk memeriksa login Mahasiswa
+    // Metode untuk login mahasiswa
     public static Mahasiswa login(String inputNama, String inputNim) {
-        for (String[] mahasiswa : dataMahasiswa) {
-            if (mahasiswa[0].equalsIgnoreCase(inputNama) && mahasiswa[1].equals(inputNim)) {
-                return new Mahasiswa(inputNama, inputNim);
+        for (Mahasiswa mhs : daftarMahasiswa) {
+            if (mhs.nama.equalsIgnoreCase(inputNama) && mhs.nim.equals(inputNim)) {
+                return mhs; // Return objek Mahasiswa jika cocok
             }
         }
         return null; // Login gagal
     }
 
-    // Metode untuk menampilkan informasi mahasiswa
+    // Metode untuk mengecek apakah nama dan NIM valid
+    public static boolean isValid(String inputNama, String inputNim) {
+        return daftarMahasiswa.stream()
+                .anyMatch(mhs -> mhs.nama.equalsIgnoreCase(inputNama) && mhs.nim.equals(inputNim));
+    }
+
+    // Menampilkan informasi mahasiswa
     public void displayInfo() {
         System.out.println("\n=== Informasi Mahasiswa ===");
         System.out.println("Nama: " + this.nama);
         System.out.println("NIM: " + this.nim);
     }
 
-    // Metode untuk mengecek apakah nama valid
-    public static boolean isNamaValid(String inputNama) {
-        for (String[] mahasiswa : dataMahasiswa) {
-            if (mahasiswa[0].equalsIgnoreCase(inputNama)) {
-                return true;
-            }
-        }
-        return false;
+    // Getter untuk nama dan NIM
+    public String getNama() {
+        return nama;
     }
 
-    // Metode untuk mengecek apakah NIM valid
-    public static boolean isNimValid(String inputNim) {
-        for (String[] mahasiswa : dataMahasiswa) {
-            if (mahasiswa[1].equals(inputNim)) {
-                return true;
-            }
-        }
-        return false;
+    public String getNim() {
+        return nim;
     }
 }
