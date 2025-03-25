@@ -1,29 +1,25 @@
-public class Admin {
-    private String username;
-    private String password;
+import java.util.ArrayList;
+import java.util.List;
 
-    // Constructor untuk inisialisasi username dan password
-    public Admin(String username, String password) {
-        this.username = username;
-        this.password = password;
+public class Admin extends User {
+    // List untuk menyimpan daftar admin yang terdaftar
+    private static final List<Admin> daftarAdmin = new ArrayList<>();
+
+    // Inisialisasi daftar admin
+    static {
+        daftarAdmin.add(new Admin("Admin235", "Password235"));
+        daftarAdmin.add(new Admin("master", "master235"));
     }
 
-    // Metode untuk login (validasi username & password sekaligus)
-    public boolean validateLogin(String inputUsername, String inputPassword) {
-        return this.username.equals(inputUsername) && this.password.equals(inputPassword);
+    // Konstruktor untuk menginisialisasi admin dengan nama dan password
+    public Admin(String nama, String password) {
+        super(nama, password);
     }
 
-    // Getter untuk username (tidak ada setter karena username sebaiknya tetap)
-    public String getUsername() {
-        return username;
-    }
-
-    // Getter & Setter untuk password (bisa diubah jika perlu)
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String newPassword) {
-        this.password = newPassword;
+    // Override method login khusus untuk admin (menggunakan nama & password)
+    @Override
+    public boolean login(String inputNama, String inputPassword) {
+        return daftarAdmin.stream()
+                .anyMatch(admin -> admin.getNama().equalsIgnoreCase(inputNama) && admin.getPassword().equals(inputPassword));
     }
 }

@@ -1,72 +1,100 @@
 import java.util.Scanner;
 
 public class LoginSystem {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final int MAX_ATTEMPTS = 3; // deklarasi konstanta maksimal percobaan login
+
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-
-        // Menampilkan menu login
-        System.out.println("===== Sistem Login =====");
-        System.out.println("1. Login sebagai Admin");
-        System.out.println("2. Login sebagai Mahasiswa");
-
-        int pilihan = 0;
         while (true) {
-            System.out.print("Masukkan pilihan (1/2): ");
-            if (input.hasNextInt()) {
-                pilihan = input.nextInt();
-                input.nextLine(); // Bersihkan buffer
-                if (pilihan == 1 || pilihan == 2) break;
-            } else {
-                input.nextLine(); // Buang input yang salah
-            }
-            System.out.println(ConsoleColor.red("Pilihan tidak valid. Harus berupa angka 1 atau 2."));
-        }
+            System.out.println("\n=== Sistem Login ===");
+            System.out.println("1. Login sebagai Mahasiswa");
+            System.out.println("2. Login sebagai Admin");
+            System.out.println("3. Keluar");
+            System.out.print("Pilih opsi (1-3): ");
+            
+            String pilihan = scanner.nextLine().trim(); // Menghapus spasi kosong
 
-        attemptLogin(pilihan, input);
-        input.close();
+            switch (pilihan) {
+                case "1":
+                    if (attemptLogin("Mahasiswa")) return; // Jika login berhasil, keluar dari program
+                    break;
+                case "2":
+                    if (attemptLogin("Admin")) return; // Jika login berhasil, keluar dari program
+                    break;
+                case "3":
+                    System.out.println(ConsoleColor.green("Terima kasih telah menggunakan sistem."));
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println(ConsoleColor.red("Pilihan tidak valid. Silakan coba lagi."));
+            }
+        }
     }
 
-    private static void attemptLogin(int userType, Scanner input) {
-        int maxPercobaan = 3;
+    // Metode untuk menangani batasan percobaan login
+    private static boolean attemptLogin(String role) {
+        int attempts = 0;
 
-        for (int i = 0; i < maxPercobaan; i++) {
-            if (userType == 1) {
-                Admin admin = new Admin("Admin235", "Password235");
+        while (attempts < MAX_ATTEMPTS) {
+            boolean success = role.equals("Mahasiswa") ? loginMahasiswa() : loginAdmin();
+            if (success) return true; // Jika login berhasil, keluar dari program
 
-                System.out.print("Username: ");
-                String inputUsername = input.nextLine();
-                System.out.print("Password: ");
-                String inputPassword = input.nextLine();
-
-                if (admin.validateLogin(inputUsername, inputPassword)) {
-                    System.out.println(ConsoleColor.green("Login berhasil sebagai Admin."));
-                    return; // Keluar dari metode jika login berhasil
-                } else {
-                    System.out.println(ConsoleColor.red("Login gagal. Username atau Password salah."));
-                }
-
-            } else if (userType == 2) {
-                System.out.print("Masukkan Nama: ");
-                String inputNama = input.nextLine();
-                System.out.print("Masukkan NIM: ");
-                String inputNim = input.nextLine();
-
-                if (!Mahasiswa.isValid(inputNama, inputNim)) {
-                    System.out.println(ConsoleColor.red("Nama atau NIM tidak valid."));
-                } else {
-                    Mahasiswa mahasiswa = Mahasiswa.login(inputNama, inputNim);
-                    System.out.println(ConsoleColor.green("Login Mahasiswa berhasil!"));
-                    mahasiswa.displayInfo();
-                    return; // Keluar dari metode jika login berhasil
-                }
-            }
-
-            int sisaPercobaan = maxPercobaan - (i + 1);
-            if (sisaPercobaan > 0) {
-                System.out.println(ConsoleColor.red("Percobaan gagal. Sisa percobaan: " + sisaPercobaan));
+            attempts++;
+            int remainingAttempts = MAX_ATTEMPTS - attempts;
+            if (remainingAttempts > 0) {
+                System.out.println(ConsoleColor.red("Kesempatan tersisa: " + remainingAttempts));
             } else {
-                System.out.println(ConsoleColor.red("Anda telah mencapai batas percobaan login."));
+                System.out.println(ConsoleColor.red("\nAnda telah gagal login 3 kali. Sistem keluar."));
+                System.exit(0); // Keluar dari program setelah gagal 3 kali
             }
+        }
+        return false;
+    }
+
+    // Login sebagai Mahasiswa
+    private static boolean loginMahasiswa() {
+        System.out.print("\nMasukkan Nama: ");
+        String nama = scanner.nextLine().trim();
+        System.out.print("Masukkan NIM: ");
+        String nim = scanner.nextLine().trim();
+
+        // Validasi input tidak boleh kosong
+        if (nama.isEmpty() || nim.isEmpty()) {
+            System.out.println(ConsoleColor.red("\nNama dan NIM tidak boleh kosong!"));
+            return false;
+        }
+
+        Mahasiswa mahasiswa = new Mahasiswa(nama, nim);
+        if (mahasiswa.login(nama, nim)) {
+            System.out.println(ConsoleColor.green("\nLogin berhasil sebagai Mahasiswa."));
+            mahasiswa.displayInfo();
+            return true;
+        } else {
+            System.out.println(ConsoleColor.red("\nLogin gagal! Nama atau NIM salah."));
+            return false;
+        }
+    }
+
+    // Login sebagai Admin hanya dengan username dan password
+    private static boolean loginAdmin() {
+        System.out.print("\nMasukkan Username: ");
+        String username = scanner.nextLine().trim();
+        System.out.print("Masukkan Password: ");
+        String password = scanner.nextLine().trim();
+
+        // Validasi input tidak boleh kosong
+        if (username.isEmpty() || password.isEmpty()) {
+            System.out.println(ConsoleColor.red("\nUsername dan Password tidak boleh kosong!"));
+            return false;
+        }
+
+        Admin admin = new Admin(username, password);
+        if (admin.login(username, password)) {
+            System.out.println(ConsoleColor.green("\nLogin berhasil sebagai Admin."));
+            return true;
+        } else {
+            System.out.println(ConsoleColor.red("\nLogin gagal! Username atau Password salah."));
+            return false;
         }
     }
 }

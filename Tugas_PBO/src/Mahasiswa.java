@@ -1,57 +1,36 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Mahasiswa {
-    private String nama;
-    private String nim;
-
-    // List mahasiswa yang valid
+public class Mahasiswa extends User {
+    // List untuk menyimpan daftar mahasiswa yang terdaftar
     private static final List<Mahasiswa> daftarMahasiswa = new ArrayList<>();
 
-    // Inisialisasi data mahasiswa
+    // Inisialisasi daftar mahasiswa
     static {
         daftarMahasiswa.add(new Mahasiswa("Muhammad Surya", "202410370110235"));
-        daftarMahasiswa.add(new Mahasiswa("Ahmad Budi", "202410370110123"));
-        daftarMahasiswa.add(new Mahasiswa("King Andi", "202410370110456"));
-        daftarMahasiswa.add(new Mahasiswa("Queen Caca", "202410370110789"));
-        daftarMahasiswa.add(new Mahasiswa("Prince Dede", "202410370110321"));
+        daftarMahasiswa.add(new Mahasiswa("Ahmad Budi", "20241037101123"));
+        daftarMahasiswa.add(new Mahasiswa("King Andi", "20241037101099"));
+        daftarMahasiswa.add(new Mahasiswa("Queen Caca", "20241037101089"));
+        daftarMahasiswa.add(new Mahasiswa("Prince Dede", "20241037101231"));
     }
 
-    // Konstruktor
+    // Konstruktor menggunakan 'super' untuk memanggil konstruktor dari User
     public Mahasiswa(String nama, String nim) {
-        this.nama = nama;
-        this.nim = nim;
+        super(nama, nim);
     }
 
-    // Metode untuk login mahasiswa
-    public static Mahasiswa login(String inputNama, String inputNim) {
-        for (Mahasiswa mhs : daftarMahasiswa) {
-            if (mhs.nama.equalsIgnoreCase(inputNama) && mhs.nim.equals(inputNim)) {
-                return mhs; // Return objek Mahasiswa jika cocok
-            }
-        }
-        return null; // Login gagal
-    }
-
-    // Metode untuk mengecek apakah nama dan NIM valid
-    public static boolean isValid(String inputNama, String inputNim) {
+    // Override method login dari superclass
+    @Override
+    public boolean login(String inputNama, String inputNim) {
         return daftarMahasiswa.stream()
-                .anyMatch(mhs -> mhs.nama.equalsIgnoreCase(inputNama) && mhs.nim.equals(inputNim));
+                .anyMatch(mhs -> mhs.getNama().equalsIgnoreCase(inputNama) && mhs.getNim().equals(inputNim));
     }
 
-    // Menampilkan informasi mahasiswa
+    // Menampilkan informasi mahasiswa dengan tambahan keterangan
+    @Override
     public void displayInfo() {
         System.out.println("\n=== Informasi Mahasiswa ===");
-        System.out.println("Nama: " + this.nama);
-        System.out.println("NIM: " + this.nim);
-    }
-
-    // Getter untuk nama dan NIM
-    public String getNama() {
-        return nama;
-    }
-
-    public String getNim() {
-        return nim;
+        super.displayInfo(); // Memanggil method displayInfo dari superclass
+        System.out.println("Status: Mahasiswa Terdaftar");
     }
 }
