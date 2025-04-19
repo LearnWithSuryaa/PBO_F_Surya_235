@@ -16,7 +16,8 @@ public class Mahasiswa extends User {
 
     // Konstruktor menggunakan 'super' untuk memanggil konstruktor dari User
     public Mahasiswa(String nama, String nim) {
-        super(nama, nim);
+        super(nama);
+        this.nim = nim;
     }
 
     // Override method login dari superclass

@@ -13,7 +13,8 @@ public class Admin extends User {
 
     // Konstruktor untuk menginisialisasi admin dengan nama dan password
     public Admin(String nama, String password) {
-        super(nama, password);
+        super(nama);
+        this.password = password;
     }
 
     // Override method login khusus untuk admin (menggunakan nama & password)
